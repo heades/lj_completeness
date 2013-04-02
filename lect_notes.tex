@@ -40,10 +40,7 @@ The University of Iowa}
 In this short lecture note we summarize how to show completeness for
 the multi-succedent intuitionistic propositional logic.  The proof
 method we use is due to Mints.  All the details can be found in his
-book ``A Short Introduction to Intuitionistic Logic.''  We do not give
-any proofs.  This is merely just an outline to facilitate learning how
-the completeness proof is done.  For the details of the proofs see Mints
-p. 57.  
+book ``A Short Introduction to Intuitionistic Logic.'' 
 % section introduction (end)
 
 \section{The Canonical Model}
@@ -59,7 +56,7 @@ denote the set of subformulas of a set of formulas $\Gamma$ as
 $Sub(\Gamma)$.
 
 \begin{definition}[Formula Full Sequent]
-  \label{def:full_sequent}  
+  \label{def:full_sequent_formula}  
   A sequent $\Gamma \vdash \Delta$ is \textbf{full for a formula} $\phi \in Sub(\Gamma,\Delta)$ if and only if 
   it is underivable and either $\phi \in \Gamma \cup \Delta$ or $\Gamma \vdash \Delta,\phi$ and $\phi,\Gamma \vdash \Delta$
   are derivable.
@@ -67,7 +64,7 @@ $Sub(\Gamma)$.
 
 \begin{definition}[Full Sequent]
   \label{def:full_sequent}
-  A sequent $\Gamma \vdash \Delta$ is full if and only if it is formula full for all formulas in 
+  A sequent $\Gamma \vdash \Delta$ is \textbf{full} if and only if it is formula full for all formulas in 
   $Sub(\Gamma,\Delta)$.
 \end{definition}
 
@@ -192,11 +189,11 @@ which remains underivable, but is full.  This is known as completion.
 \end{lemma}
 \begin{proof}
   Using Definition~\ref{def:completion_sequence} and Lemma~\ref{lemma:completion_aux} we 
-  can construct the completion sequence $\Gamma_0 \subseteq \cdots \Gamma_n$ and
+  can construct the completion sequence $\Gamma_0 \subseteq \cdots \subseteq \Gamma_n$ and
   $\Delta_0 \subseteq \cdots \subseteq \Delta_n$ with respect to some sequence of
-  the formulas in $Sub(\Gamma_0,\Delta_0)$, $\phi_0,\ldots ,\phi_{n-1}$ such that 
-  $\Gamma_i \vdash \Delta_i$ is full with respect to the formulas $\phi_j$ for all
-  $j < i$.  Take $\Gamma = \bigcup \Gamma_i$ and $\Delta = \bigcup \Delta_i$.  
+  the formulas in $Sub(\Gamma_0,\Delta_0)$, $\phi_0,\ldots ,\phi_{n-1}$, such that 
+  $\Gamma_i \vdash \Delta_i$ is formula full with respect to the formulas $\phi_j$ for all
+  $j < i$.  Take $\Gamma = \Gamma_n$ and $\Delta = \Delta_n$.  
   Clearly, $\Gamma \vdash \Delta$ is full.  
 \end{proof}
 
