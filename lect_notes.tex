@@ -70,7 +70,7 @@ $Sub(\Gamma)$.
 
 \begin{definition}[Saturated for Invertible Rules]
   \label{def:sat_for_invert_rules}
-  A sequent $\Gamma \vdash \Delta$ is \textbf{saturated for invertable rules} if it is
+  A sequent $\Gamma \vdash \Delta$ is \textbf{saturated for invertible rules} if it is
   underivable and the following conditions hold for any $\phi$ and $\psi$:
     \begin{itemize}
     \item[Case.] If $\phi \land \psi \in \Delta$ then $\phi \in \Delta$ or $\psi \in \Delta$.
@@ -197,7 +197,7 @@ which remains underivable, but is full.  This is known as completion.
   Clearly, $\Gamma \vdash \Delta$ is full.  
 \end{proof}
 
-We know arrive at the definition of the canonical Kripke model. This
+We now arrive at the definition of the canonical Kripke model. This
 will be the counter model we will use to show completeness.
 
 \begin{definition}[Canonical Model]
@@ -220,12 +220,12 @@ We now show that the canonical model falsifies every underivable sequent.
   $V(\land \Gamma,w) = 1$ and $V(\lor \Delta, w) = 1$.  This implies that $V(\Gamma \vdash \Delta, w) = 0$.
 \end{definition}
 
-Above we saw when a sequent is saturated for invertable rules.  Next we define when a set of sequents 
-is saturated for non-invertable rules. Following this definition is the definition of when a set is
+Above we saw when a sequent is saturated for invertible rules.  Next we define when a set of sequents 
+is saturated for non-invertible rules. Following this definition is the definition of when a set is
 saturated.
-\begin{definition}[Saturated for Non-Invertable Rules]
+\begin{definition}[Saturated for Non-Invertible Rules]
   \label{def:sat_non-invert_rules}
-  A set of sequents $M$ is \textbf{saturated for non-invertable rules} if the
+  A set of sequents $M$ is \textbf{saturated for non-invertible rules} if the
   following condition is satisfied for every $\Gamma \vdash \Delta$
   in $M$:
   \begin{center}
@@ -236,8 +236,8 @@ saturated.
 
 \begin{definition}[Saturated Set]
   \label{def:sat_set}
-  A set of sequents $M$ is \textbf{saturated} if every sequent in $M$ is saturated for invertable rules
-  and $M$ is saturated for non-invertable rules.
+  A set of sequents $M$ is \textbf{saturated} if every sequent in $M$ is saturated for invertible rules
+  and $M$ is saturated for non-invertible rules.
 \end{definition}
 
 The following result is important for completeness.
@@ -246,6 +246,14 @@ The following result is important for completeness.
   \label{lemma:canonical_model_is_saturated}
   The set $W$ of the canonical model is saturated.
 \end{lemma}
+\begin{proof}
+  By definition of $W$ every sequent in $W$ is full, hence by Lemma~\ref{lemma:saturation} they are 
+  saturated for invertible rules.  It suffices to show that $W$ is saturated for non-invertible rules.
+  If $\Gamma \vdash \phi \to \psi,\Delta \in W$ then it must be the case that $\phi,\Gamma \vdash \psi,\Delta$
+  is underivable.  So by Lemma~\ref{lemma:completion} we may construct the full sequent 
+  $\Gamma' \vdash \Delta' \in W$  for some $\Gamma'$ and $\Delta'$, such that $\phi,\Gamma \subseteq \Gamma'$ and 
+  $\psi \in \Delta'$.
+\end{proof}
 
 \begin{thm}[Falsification in $K$]
   \label{thm:falsification_in_k}
@@ -258,6 +266,9 @@ The following result is important for completeness.
   \end{center}
   This implies that $V_\in(\Gamma \vdash \Delta, w) = 0$, that is, $w$ is falsified in $K$.
 \end{thm}
+\begin{proof}
+  TODO.
+\end{proof}
 
 \noindent
 This is all that is needed to prove completeness of LJ.  We prove this in the next section.
