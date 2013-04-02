@@ -1,0 +1,303 @@
+\documentclass{article} 
+
+\usepackage{times}
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\usepackage{fullpage}
+\usepackage{moreverb}
+\usepackage{color}
+\usepackage{ifthen}
+\usepackage{supertabular}
+
+\begin{document}
+\bibliographystyle{plain}
+\newtheorem{thm}{Theorem}
+\newtheorem{lemma}[thm]{Lemma}
+
+\newtheorem{corollary}[thm]{Corollary}
+\newtheorem{definition}[thm]{Definition}
+\newtheorem{remark}[thm]{Remark}
+\newtheorem{proposition}[thm]{Proposition}
+\newtheorem{notn}[thm]{Notation}
+\newtheorem{observation}[thm]{Observation}
+
+\newcommand{\interp}[1]{[\negthinspace[#1]\negthinspace]}
+\newcommand{\normto}[0]{\rightsquigarrow^{!}}
+\newcommand{\case}[4]{\text{case}\ #1\ \text{of}\ #2\text{.}#3\text{,}#2\text{.}#4}
+\newcommand{\join}[0]{\downarrow}
+
+\title{A Completeness Proof for LJ}
+\author{Harley D. Eades III \\
+Computer Science\\
+The University of Iowa}
+
+\maketitle
+
+\section{Introduction}
+\label{sec:introduction}
+In this short lecture note we summarize how to show completeness for
+the multi-succedent intuitionistic propositional logic.  The proof
+method we use is due to Mints.  All the details can be found in his
+book ``A Short Introduction to Intuitionistic Logic.''  We do not give
+any proofs.  This is merely just an outline to facilitate learning how
+the completeness proof is done.  For the details of the proofs see Mints
+p. 57.  
+% section introduction (end)
+
+\section{The Canonical Model}
+\label{sec:the_canonical_model}
+In this section we define the canonical model and give some properties
+of this model.  We call a sequent \textbf{underivable} if and only if
+there does not exist a derivation in the logic starting with the
+sequent.  
+
+To define the canonical model we first must define when a sequent is
+complete, and when a sequent is saturated for invertible rules.  We
+denote the set of subformulas of a set of formulas $\Gamma$ as
+$Sub(\Gamma)$.
+
+\begin{definition}[Formula Complete Sequent]
+  \label{def:complete_sequent}  
+  A sequent $\Gamma \vdash \Delta$ is \textbf{complete for a formula} $\phi \in Sub(\Gamma,\Delta)$ if and only if 
+  it is underivable and either $\phi \in \Gamma \cup \Delta$ or $\Gamma \vdash \Delta,\phi$ and $\phi,\Gamma \vdash \Delta$
+  are derivable.
+\end{definition}
+
+\begin{definition}[Complete Sequent]
+  \label{def:complete_sequent}
+  A sequent $\Gamma \vdash \Delta$ is complete if and only if it is formula complete for all formulas in 
+  $Sub(\Gamma,\Delta)$.
+\end{definition}
+
+\begin{definition}[Saturated for Invertible Rules]
+  \label{def:sat_for_invert_rules}
+  A sequent $\Gamma \vdash \Delta$ is \textbf{saturated for invertable rules} if it is
+  underivable and the following conditions hold for any $\phi$ and $\psi$:
+    \begin{itemize}
+    \item[Case.] If $\phi \land \psi \in \Delta$ then $\phi \in \Delta$ or $\psi \in \Delta$.
+    \item[Case.] If $\phi \land \psi \in \Gamma$ then $\phi \in \Gamma$ and $\psi \in \Gamma$.
+    \item[Case.] If $\phi \lor \psi \in \Delta$ then $\phi \in \Delta$ and $\psi \in \Delta$.
+    \item[Case.] If $\phi \lor \psi \in \Gamma$ then $\phi \in \Gamma$ or $\psi \in \Gamma$.      
+    \item[Case.] If $\phi \to \psi \in \Gamma$ then $\phi \in \Delta$ or $\psi \in \Gamma$.      
+    \end{itemize}    
+\end{definition}
+\noindent
+Notice in the above definition that we do not have the following condition:
+\begin{center}
+  If $\phi \to \psi \in \Delta$ then $\phi \in \Gamma$ and $\psi \in \Delta$.      
+\end{center}
+This is because the rule for right implication is not an invertible rule.  
+
+\noindent
+The following result holds for complete sequents.
+\begin{lemma}[Saturation]
+  \label{lemma:saturation}
+  If $\Gamma \vdash \Delta$ is complete, then it is saturated for invertible rules.
+\end{lemma}
+
+It turns out that if a sequent is underivable then it may be extended into a new sequent
+which remains underivable, but is complete.  This is known as completion. 
+
+\begin{definition}[The Completion Sequences]
+  \label{def:completion_sequence}
+  Suppose $\Gamma_0 \vdash \Delta_0$ is an underivable sequent, and that
+  $\phi_0, \ldots, \phi_n$ is a fixed sequence of all the formulas in $Sub(\Gamma_0,\Delta_0)$.  
+  Then we define the \textbf{completion} sequences for $\Gamma_0 \vdash \Delta_0$ by constructing the sequences
+  $\Gamma_0' \subseteq \cdots \subseteq \Gamma_{n+1}'$  and $\Delta_0' \subseteq \cdots \subseteq \Delta_{n+1}'$
+  of finite sets of formulas such that $\Gamma_i' \vdash \Delta_i'$ is underivable and complete for 
+  formulas $\phi_j$ for all $j < i$.  That is either $\phi_j \in \Gamma_i' \cup \Delta_i'$ or both
+  $\Gamma_i' \vdash \Delta_i',\phi_j$ and $\phi_j,\Gamma_i' \vdash \Delta_i'$ are derivable.
+
+  \ \\
+  The construction is defined by mutual recursion as follows:
+  \begin{center}
+    \begin{math}
+      \begin{array}{llll}
+        \Gamma'_0         & := & \Gamma_0 \\
+        \Gamma'_{i+1}     & := & \phi_i,\Gamma'_i & \text{ if } \phi_i, \Gamma'_i \vdash \Delta'_i 
+                                                    \text{ is underivable }\\
+        \Gamma'_{i+1}     & := & \Gamma'_i & \text{ otherwise }
+      \end{array}
+    \end{math}
+  \end{center}
+  \noindent
+  and \ \\
+  \begin{center}
+    \begin{math}
+      \begin{array}{llll}
+        \Delta'_0         & := & \Delta_0 \\
+        \Delta'_{i+1}     & := & \phi_i,\Delta'_i & \text{ if } \Gamma'_{i+1} \vdash \Delta'_i,\phi_i
+                                                    \text{ is underivable }\\
+        \Delta'_{i+1}     & := & \Delta'_i & \text{ otherwise. }
+      \end{array}
+    \end{math}
+  \end{center}
+\end{definition}
+
+\begin{lemma}
+  \label{lemma:completion_aux}
+  If $\Gamma_0 \subseteq \cdots \subseteq \Gamma_n$ and $\Delta_0 \subseteq \cdots \subseteq \Delta_n$ are
+  completion sequences with respect to the sequence of subformulas $\phi_0, \ldots , \phi_{n-1}$ then 
+  $\Gamma_i \vdash \Delta_i$ is complete with respect to the formulas $\phi_j$ for all $j < i$.
+\end{lemma}
+\begin{proof}
+  This is a proof by induction on $i$. 
+  \begin{itemize}
+  \item[Base Case.] Then we must show that $\Gamma_0 \vdash \Delta_0$ is complete with respect to
+    the formulas $\phi_j$ for all $j < 0$.  This is trivially the case.
+
+  \item[Step Case.] We must show that $\Gamma_{i+1} \Delta_{i+1}$ is complete with respect to the formulas
+    $\phi_j$ for all $j < i+1$.  Based on the definition of completion sequences we know one of two things
+    about $\Gamma$.
+    \begin{itemize}
+    \item[Case.] Suppose $\Gamma_{i+1} = \Gamma_i,\phi_i$.  Then it must be the case that 
+      $\Gamma_{i+1} \vdash \Delta_{i}$ is underivable.  Now we case split on $\Delta$.
+      \begin{itemize}
+      \item[Case.] Suppose $\Delta_{i+1} = \Delta_i,\phi_i$.  Then it must be the case that 
+        $\Gamma_{i+1} \vdash \Delta_i,\phi_i$ is underivable.  However, this is not the case.
+        Thus we have arrived at a contradiction.
+
+      \item[Case.] Suppose $\Delta_{i+1} = \Delta_{i}$.  Completeness of $\Gamma_{i+1} \vdash \Delta_{i+1}$
+        follows from the fact that we know by the IH that $\Gamma_i \vdash \Delta_i$ is complete with respect
+        to formulas $\phi_j$ for all $j < i$, $\phi_i \in \Gamma_i \cup \Delta_i$, and $\Gamma_{i+1} \vdash \Delta_i$
+        is underivable.
+      \end{itemize}
+
+    \item[Case.] Suppose $\Gamma_{i+1} = \Gamma_i$.  We case split on the form of $\Delta$.
+      \begin{itemize}
+      \item[Case.] Suppose $\Delta_{i+1} = \Delta_i,\phi_i$.  Then it must be the case that 
+        $\Gamma_{i+1} \vdash \Delta_{i+1}$ is underivable.  In addition we know that 
+        $\phi_i \in \Gamma_{i+1} \cup \Delta_{i+1}$.  By the IH we know that $\Gamma_i \vdash \Delta_i$ is
+        complete with respect to the formulas $\phi_j$ for all $j < i$.  Thus, by definition we know
+        $\Gamma_{i+1} \vdash \Delta_{i+1}$ is also complete.
+        
+      \item[Case.] Suppose $\Delta_{i+1} = \Delta_{i}$.  Completeness of $\Gamma_{i+1} \vdash \Delta_{i+1}$
+        follows from the fact that we know $\Gamma_i,\phi_i \vdash \Delta_i$ and
+        $\Gamma_i \vdash \Delta_i,\phi_i$ are derivable.  
+      \end{itemize}
+
+    \end{itemize}
+
+  \end{itemize}
+
+\end{proof}
+
+\begin{lemma}[Completion]
+  \label{lemma:completion}
+  Any underivable sequent $\Gamma_0 \vdash \Delta_0$ may be extended to a complete sequent
+  $\Gamma \vdash \Delta$ for some $\Gamma$ and $\Delta$ consisting of subformulas of 
+  $\Gamma_0$ and $\Delta_0$.
+\end{lemma}
+\begin{proof}
+  Using Definition~\ref{def:completion_sequence} and Lemma~\ref{lemma:completion_aux} we 
+  can construct the completion sequence $\Gamma_0 \subseteq \cdots \Gamma_n$ and
+  $\Delta_0 \subseteq \cdots \subseteq \Delta_n$ with respect to some sequence of
+  the formulas in $Sub(\Gamma_0,\Delta_0)$, $\phi_0,\ldots ,\phi_{n-1}$ such that 
+  $\Gamma_i \vdash \Delta_i$ is complete with respect to the formulas $\phi_j$ for all
+  $j < i$.  Take $\Gamma = \bigcup \Gamma_i$ and $\Delta = \bigcup \Delta_i$.  
+  Clearly, $\Gamma \vdash \Delta$ is complete.  
+\end{proof}
+
+
+
+We know arrive at the definition of the canonical Kripke model. This
+will be the counter model we will use to show completeness.
+
+\begin{definition}[Canonical Model]
+  \label{def:canon_model}
+  The \textbf{canonical Kripke model} $K$ is a tuple $\langle W, R_\subseteq, V_{\in} \rangle$
+  such that 
+  \begin{center}
+    \begin{itemize}
+    \item $W$ is the set of all complete sequents,
+    \item $R_\subset(\Gamma \vdash \Delta,\Gamma' \vdash \Delta') = \Gamma \subseteq \Gamma'$, and
+    \item $V_\in(p, \Gamma \vdash \Delta) = p \in \Gamma$.
+    \end{itemize}
+  \end{center}
+\end{definition}
+\noindent
+Note that by completion the set of canonical worlds $W$ must contain all completed underivable sequents.
+Hence, there exists a mapping between all underivable sequents and the underivable worlds of $W$. This
+mapping is defined by completion.  This is a key point of which completeness depends. 
+
+We now show that the canonical model falsifies every underivable sequent. 
+\begin{definition}
+  \label{def:Falsification}
+  A sequent $\Gamma \vdash \Delta$ is \textbf{falsified} in a world $w$ of a Kripke model if
+  $V(\land \Gamma,w) = 1$ and $V(\lor \Delta, w) = 1$.  This implies that $V(\Gamma \vdash \Delta, w) = 0$.
+\end{definition}
+
+Above we saw when a sequent is saturated for invertable rules.  Next we define when a set of sequents 
+is saturated for non-invertable rules. Following this definition is the definition of when a set is
+saturated.
+\begin{definition}[Saturated for Non-Invertable Rules]
+  \label{def:sat_non-invert_rules}
+  A set of sequents $M$ is \textbf{saturated for non-invertable rules} if the
+  following condition is satisfied for every $\Gamma \vdash \Delta$
+  in $M$:
+  \begin{center}
+    if $\phi \to \psi \in \Delta$, then there is a sequent $\Gamma' \vdash \Delta' \in M$ such that
+    $\phi,\Gamma \subseteq \Gamma'$ and $\psi \in \Delta$.
+  \end{center}
+\end{definition}
+
+\begin{definition}[Saturated Set]
+  \label{def:sat_set}
+  A set of sequents $M$ is \textbf{saturated} if every sequent in $M$ is saturated for invertable rules
+  and $M$ is saturated for non-invertable rules.
+\end{definition}
+
+The following result is important for completeness.
+
+\begin{lemma}[Canonical Model is Saturated]
+  \label{lemma:canonical_model_is_saturated}
+  The set $W$ of the canonical model is saturated.
+\end{lemma}
+
+\begin{thm}[Falsification in $K$]
+  \label{thm:falsification_in_k}
+  Let $K = \langle W, R_\subseteq, V_\in \rangle$ be the canonical model. Then for $w \equiv \Gamma \vdash \Delta \in W$:
+  \begin{center}
+    \begin{itemize}
+    \item[] If $\phi \in \Gamma$ then $V_\in(\phi, w) = 1$, and
+    \item[] if $\phi \in \Delta$ then $V_\in(\phi,w) = 0$.
+    \end{itemize}
+  \end{center}
+  This implies that $V_\in(\Gamma \vdash \Delta, w) = 0$, that is, $w$ is falsified in $K$.
+\end{thm}
+
+\noindent
+This is all that is needed to prove completeness of LJ.  We prove this in the next section.
+% section the_canonical_model (end)
+
+\section{Completeness}
+\label{sec:completeness}
+
+\begin{thm}[Completeness]
+  \label{thm:completeness}
+  Each sequent underivable in LJ is falsified in the canonical model $K$.  Hence
+  every valid sequent is derivable in LJ.
+\end{thm}
+\begin{proof}
+  Suppose that $\Gamma \vdash \Delta$ is an underivable sequent in LJ, and $W$ is the saturated set of all complete sequents.
+  That is $W$ is the set of worlds of $K$. Then by completion (Lemma~\ref{lemma:completion}),
+  there exists a $\Gamma'$ and $\Delta'$ such that $\Gamma' \vdash \Delta'$ is the completed version of $\Gamma \vdash \Delta$. 
+  Sense $W$ is saturated we know $\Gamma' \vdash \Delta' \in W$, and we may apply Theorem~\ref{thm:falsification_in_k} to obtain
+  that $V_\in(\Gamma' \vdash \Delta', \Gamma' \vdash \Delta') = 0$.  Hence, by monotonicity 
+  $V_\in(\Gamma \vdash \Delta, \Gamma' \vdash \Delta') = 0$.
+\end{proof}
+
+\begin{corollary}[Admissibility of Cut]
+  \label{corollary:admissibility_of_cut}
+  If $\Gamma \vdash \Delta, \phi$ and $\phi, \Gamma \vdash \Delta$ are derivable, then $\Gamma \vdash \Delta$ is derivable.
+\end{corollary}
+\begin{proof}
+  Suppose $\Gamma \vdash \Delta, \phi$ and $\phi, \Gamma \vdash \Delta$ are derivable for some $\Gamma$,$\Delta$, and $\phi$.
+  Clearly, $\Gamma \vdash \phi$ is derivable by a simple application of the cut rule.  Thus, by soundness + cut we know 
+  $\Gamma \vdash \phi$ is valid.  Now by completeness (without cut) $\Gamma \vdash \Delta$ is derivable. 
+\end{proof}
+% section completeness (end)
+
+\end{document}
