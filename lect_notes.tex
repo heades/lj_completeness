@@ -260,14 +260,56 @@ The following result is important for completeness.
   Let $K = \langle W, R_\subseteq, V_\in \rangle$ be the canonical model. Then for $w \equiv \Gamma \vdash \Delta \in W$:
   \begin{center}
     \begin{itemize}
-    \item[] If $\phi \in \Gamma$ then $V_\in(\phi, w) = 1$, and
-    \item[] if $\phi \in \Delta$ then $V_\in(\phi,w) = 0$.
+    \item[a.] If $\phi \in \Gamma$ then $V_\in(\phi, w) = 1$, and
+    \item[b.] if $\phi \in \Delta$ then $V_\in(\phi,w) = 0$.
+    \item[c.] This implies that $V_\in(\Gamma \vdash \Delta, w) = 0$, that is, $w$ is 
+      falsified in $K$.
     \end{itemize}
-  \end{center}
-  This implies that $V_\in(\Gamma \vdash \Delta, w) = 0$, that is, $w$ is falsified in $K$.
+  \end{center}  
 \end{thm}
 \begin{proof}
-  TODO.
+  The conditions a and b imply the condition c. Thus it suffices to show conditions 
+  a and b. They can be proven by simultaneous induction on $\phi$. 
+  \begin{itemize}
+  \item[Case.] Suppose $\phi \equiv p$.  
+    \begin{itemize}
+    \item[a.] If $\phi \in \Gamma$ then by the definition of $K$ we have 
+      $V_\in(\phi,w) = 1$.
+    \item[b.] If $\phi \in \Delta$ then it must be the case
+    that $\phi \not\in \Gamma$ or $\Gamma \vdash \Delta$ would not be full (because it
+    is derivable), but all worlds of $K$ are full.  Therefore, it must be the case
+    that $V_\in(\phi,w) = 0$.
+    \end{itemize}
+
+    
+  \item[Case.] Suppose $\phi \equiv \phi_1 \land \phi_2$.
+    \begin{itemize}
+    \item[a.] Suppose $\phi \in \Gamma$.  Then we know $\phi_1 \in \Gamma$
+      and $\phi_2 \in \Gamma$, because $\Gamma \vdash \Delta$ is full, hence,
+      saturated for invertible rules. Thus, $V_\in(\phi_1,w) = 1$ and $V_\in(\phi_2,w) = 1$
+      by the IH.
+      
+    \item[b.] Suppose $\phi \in \Delta$. Then it must be the case that 
+      either $\phi_1 \in \Delta$ or $\phi_2 \in \Delta$ because $\Gamma \vdash \Delta$
+      is saturated for invertible rules.  Consider the former.  Then by the IH 
+      $V_\in(\phi_1,w) = 0$.  This implies that $V_\in(\phi,w) = 0$.  The case 
+      where $\phi_2 \in \Delta$ is similar.
+    \end{itemize}
+
+  \item[Case.] Suppose $\phi \equiv \phi_1 \lor \phi_2$.
+    \begin{itemize}
+    \item[a.] If $\phi \in \Gamma$ then 
+    \item[b.] If $\phi \in \Delta$ then 
+    \end{itemize}
+    
+  \item[Case.] Suppose $\phi \equiv \phi_1 \to \phi_2$.
+    \begin{itemize}
+    \item[a.] If $\phi \in \Gamma$ then 
+    \item[b.] If $\phi \in \Delta$ then 
+    \end{itemize}
+    
+  \end{itemize}
+
 \end{proof}
 
 \noindent
