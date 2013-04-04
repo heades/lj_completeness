@@ -296,20 +296,19 @@ The following result is important for completeness.
       where $\phi_2 \in \Delta$ is similar.
     \end{itemize}
 
-  \item[Case.] Suppose $\phi \equiv \phi_1 \lor \phi_2$.
-    \begin{itemize}
-    \item[a.] If $\phi \in \Gamma$ then 
-    \item[b.] If $\phi \in \Delta$ then 
-    \end{itemize}
+  \item[Case.] Suppose $\phi \equiv \phi_1 \lor \phi_2$.  Similar to the case for conjunction.
     
   \item[Case.] Suppose $\phi \equiv \phi_1 \to \phi_2$.
     \begin{itemize}
-    \item[a.] If $\phi \in \Gamma$ then 
-    \item[b.] If $\phi \in \Delta$ then 
-    \end{itemize}
-    
-  \end{itemize}
+    \item[a.] If $\phi \in \Gamma$ then for every $w' = \Gamma' \vdash \Delta'$ such that $R_W(w,w')$ ($\Gamma \subseteq \Gamma'$)
+      we have $\phi \in \Gamma'$.  By saturation for invertible rules we have $\phi_1 \in \Delta'$ or $\phi_2 \in \Gamma'$.  
+      Thus by the IH we have $V_\in(\phi_1,w') = 0$ or $V_\in(\phi_2,w') = 1$.  This implies that $V_\in(\phi,w) = 1$.
 
+    \item[b.] If $\phi \in \Delta$ then by Lemma~\ref{lemma:canonical_model_is_saturated} $W$ is saturated for non-invertible
+      rules.  Hence there exists a $w' = \Gamma' \vdash \Delta'$ such that $R_W(w,w')$, $\phi_1 \in \Gamma'$ and $\phi_2 \in \Delta'$.
+      By the IH $V_\in(\phi_1,w') = 1$ and $V_\in(\phi_2,w') = 0$.  This implies that $V_\in(\phi,w) = 0$.
+    \end{itemize}    
+  \end{itemize}
 \end{proof}
 
 \noindent
