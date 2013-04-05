@@ -10,6 +10,7 @@
 \usepackage{color}
 \usepackage{ifthen}
 \usepackage{supertabular}
+\usepackage{mathpartir}
 
 \begin{document}
 \bibliographystyle{plain}
@@ -28,7 +29,7 @@
 \newcommand{\case}[4]{\text{case}\ #1\ \text{of}\ #2\text{.}#3\text{,}#2\text{.}#4}
 \newcommand{\join}[0]{\downarrow}
 
-\title{A Completeness Proof for LJ}
+\title{Lecture Note: Proving Completeness of LJ}
 \author{Harley D. Eades III \\
 Computer Science\\
 The University of Iowa}
@@ -37,23 +38,149 @@ The University of Iowa}
 
 \section{Introduction}
 \label{sec:introduction}
-In this short lecture note we summarize how to show completeness for
-the multi-succedent intuitionistic propositional logic.  The proof
-method we use is due to Mints.  All the details can be found in his
-book ``A Short Introduction to Intuitionistic Logic.'' 
+In this short lecture note we show how to prove completeness for the
+multi-succedent intuitionistic propositional logic LJ. The proof
+method we use is due to Mints in his book ``A Short Introduction to
+Intuitionistic Logic.'' The proof of completeness is quite remarkable.
+All the definitions we will develop fit together beautifully.  The usual
+statement of completeness is the following:
+\begin{center}
+  \begin{tabular}{lll}
+    If a formula is valid then it is derivable in the logic. & (1)
+  \end{tabular}
+\end{center}
+The model we use is the standard Kripke semantics for intuitionistic logic.
+Details of this model can be found in Chap. 7 of Mints' book.  Now instead of proving
+(1) directly we instead prove the contrapositive. That is 
+\begin{center}
+  \begin{tabular}{lll}
+    \begin{tabular}{lll}
+      For every underivable formula there exists a model such that the formula is falsified. & (2)
+    \end{tabular}
+  \end{tabular}
+\end{center}
+It turns out that we can show that every underivable formula is falsified in the canonical model.  So our
+theorem statement becomes the following:
+\begin{center}
+  \begin{tabular}{lll}
+    \begin{tabular}{lll}
+      Every underivable formula is falsified in the canonical model. & (3)
+    \end{tabular}
+  \end{tabular}
+\end{center}
+Our first step to proving (3) is to define the logic then the canonical model.  Following this we will show
+that all underivable sequents are falsified in the canonical model.  Then using this fact we will conclude completeness.
 % section introduction (end)
+
+\section{The Logic LJ}
+\label{sec:the_logic_lj}
+In this section we define the logic which we will prove complete.  The logic is a version of
+Gentzen's multi-succedent intuitionistic propositional logic. The inference rules are defined
+in Figure~\ref{fig:lj_ir}. This is the formulation due to 
+Mints, however, we modified the axiom inference rule.  Our version results in shorter proof derivations. 
+The rule Mints uses is the following:
+\begin{center}
+  \begin{math}
+    $$\mprset{flushleft}
+    \inferrule* [right=MintsAx] {
+      \ 
+    }{\phi \vdash \phi}
+  \end{math}
+\end{center}
+In order to apply his rule one must use the weaking rules to remove any other hypotheses on the left and
+any other conclusions on the right.  Thus, proof trees will be bigger.  It may be the case that Mints' 
+rule is more amendable to proof search, but this does not concern us here.
+
+\begin{figure}[h]
+  \begin{center}
+    \begin{math}
+      \begin{array}{ccc}
+        $$\mprset{flushleft}
+        \inferrule* [right=Ax] {
+          \ 
+        }{\Gamma, \phi, \Gamma' \vdash \Delta,\phi,\Delta'}
+        &
+        $$\mprset{flushleft}
+        \inferrule* [right=$\perp$] {
+          \ 
+        }{\Gamma, \perp \vdash \Delta,p}\\
+        & \\
+        $$\mprset{flushleft}
+        \inferrule* [right=$\land_\text{r}$] {
+          \Gamma \vdash \Delta,\phi
+          \\
+          \Gamma \vdash \Delta,\psi
+        }{\Gamma \vdash \Delta,\phi \land \psi}
+        & 
+        $$\mprset{flushleft}
+        \inferrule* [right=$\land_\text{l}$] {
+          \phi,\psi,\Gamma \vdash \Delta
+        }{\phi \land \psi,\Gamma \vdash \Delta}\\
+        & \\
+        $$\mprset{flushleft}
+        \inferrule* [right=$\lor_\text{r}$] {
+          \Gamma \vdash \Delta,\phi,\psi
+        }{\Gamma \vdash \Delta,\phi \lor \psi}
+        &
+        $$\mprset{flushleft}
+        \inferrule* [right=$\lor_\text{l}$] {
+          \phi,\Gamma \vdash \Delta
+          \\
+          \psi,\Gamma \vdash \Delta
+        }{\phi \lor \psi, \Gamma \vdash \Delta}\\
+        & \\
+        $$\mprset{flushleft}
+        \inferrule* [right=$\to_\text{r}$] {
+          \phi,\Gamma \vdash \psi
+        }{\Gamma \vdash \Delta,\phi \to \psi}
+        &
+        $$\mprset{flushleft}
+        \inferrule* [right=$\to_\text{l}$] {
+          \phi \to \psi,\Gamma \vdash \Delta,\phi
+          \\
+          \psi,\Gamma \vdash \Delta
+        }{\phi \to \psi,\Gamma \vdash \Delta}\\
+        & \\        
+        $$\mprset{flushleft}
+        \inferrule* [right=$\text{Contr}_\text{r}$] {
+          \Gamma \vdash \Delta,\phi,\phi
+        }{\Gamma \vdash \Delta,\phi}
+        &
+        $$\mprset{flushleft}
+        \inferrule* [right=$\text{Contr}_\text{l}$] {
+          \phi,\phi,\Gamma \vdash \Delta
+        }{\phi,\Gamma \vdash \Delta}        \\
+        &\\
+        $$\mprset{flushleft}
+        \inferrule* [right=$\text{Weak}_\text{r}$] {
+          \Gamma \vdash \Delta
+        }{\Gamma \vdash \Delta,\phi}        
+        &
+        $$\mprset{flushleft}
+        \inferrule* [right=$\text{Weak}_\text{l}$] {
+          \Gamma \vdash \Delta
+        }{\phi,\Gamma \vdash \Delta}
+      \end{array}
+    \end{math}
+  \end{center}
+  \caption{Gentzen's LJ}
+  \label{fig:lj_ir}
+\end{figure}
+
+% section the_logic_lj (end)
+
 
 \section{The Canonical Model}
 \label{sec:the_canonical_model}
-In this section we define the canonical model and give some properties
-of this model.  We call a sequent \textbf{underivable} if and only if
+We are now ready to work towards the definition of the canonical
+model. However, before we can define it we will need some mathematical
+apparatus first. We call a sequent \textbf{underivable} if and only if
 there does not exist a derivation in the logic starting with the
-sequent.  
-
-To define the canonical model we first must define when a sequent is
-full, and when a sequent is saturated for invertible rules.  We
-denote the set of subformulas of a set of formulas $\Gamma$ as
-$Sub(\Gamma)$.
+sequent. To define the canonical model we first must define when a
+sequent is full, and when a sequent is saturated for invertible rules.
+We denote the set of subformulas of a set of formulas $\Gamma$ as
+$Sub(\Gamma)$, and we extend this to multiple sets of formulas by
+$Sub(\Gamma,\Delta) = Sub(\Gamma) \cup Sub(\Delta)$.
 
 \begin{definition}[Formula Full Sequent]
   \label{def:full_sequent_formula}  
@@ -67,6 +194,12 @@ $Sub(\Gamma)$.
   A sequent $\Gamma \vdash \Delta$ is \textbf{full} if and only if it is formula full for all formulas in 
   $Sub(\Gamma,\Delta)$.
 \end{definition}
+Mints calls full sequents complete.  He also does not split the definition up as we do here.  Nonetheless he makes use
+of the previous definition without defining it.  The key property of this entire proof is the notion of full sequents.
+Because we will show that all the worlds of the canonical model are full.  Thus, to show that all underivable sequents
+are falsified in the model then we better have a way to make any underivable sequent full.  This point is the guiding 
+reason why we need all of this mathematical apparatus.  The next definition defines when a sequent is saturated for
+invertible rules.  
 
 \begin{definition}[Saturated for Invertible Rules]
   \label{def:sat_for_invert_rules}
@@ -93,10 +226,15 @@ The following result holds for full sequents.
   \label{lemma:saturation}
   If $\Gamma \vdash \Delta$ is full, then it is saturated for invertible rules.
 \end{lemma}
+If one stops and ponders what the previous statement says it makes perfect sense.  A full
+sequent is one in which every subformula of sequent is contained in either the left of the
+sequent or the right depending on underivability. This definition lends itself to the 
+fact that such a sequent is saturated for invertible rules.  The proof of the previous
+lemma can be found in the book p. 58.
 
-It turns out that if a sequent is underivable then it may be extended into a new sequent
-which remains underivable, but is full.  This is known as completion. 
-
+The next definition defines the completion sequences for an underivable sequent.  These 
+sequences will be used to construct an equivalent full sequent of some underivable sequent.
+Again, being able to do this is key for the proof of completeness.
 \begin{definition}[The Completion Sequences]
   \label{def:completion_sequence}
   Suppose $\Gamma_0 \vdash \Delta_0$ is an underivable sequent, and that
@@ -132,6 +270,11 @@ which remains underivable, but is full.  This is known as completion.
     \end{math}
   \end{center}
 \end{definition}
+\noindent
+Naturally, we show that each sequent built from the completion sequences are full.  The proof of this
+lemma is non-trivial.  It is easy, but non-trivial.  Mints however does not give a proof of this, but
+rather assumes it.  In fact Mints rolls the previous definition and the next two lemmas into
+one lemma. We believe these are in error and aids confusion.
 
 \begin{lemma}
   \label{lemma:completion_aux}
@@ -145,7 +288,7 @@ which remains underivable, but is full.  This is known as completion.
   \item[Base Case.] Then we must show that $\Gamma_0 \vdash \Delta_0$ is full with respect to
     the formulas $\phi_j$ for all $j < 0$.  This is trivially the case.
 
-  \item[Step Case.] We must show that $\Gamma_{i+1} \Delta_{i+1}$ is full with respect to the formulas
+  \item[Step Case.] We must show that $\Gamma_{i+1} \vdash \Delta_{i+1}$ is full with respect to the formulas
     $\phi_j$ for all $j < i+1$.  Based on the definition of completion sequences we know one of two things
     about $\Gamma$.
     \begin{itemize}
@@ -180,7 +323,8 @@ which remains underivable, but is full.  This is known as completion.
   \end{itemize}
 
 \end{proof}
-
+\noindent
+Finally, the main completion lemma.
 \begin{lemma}[Completion]
   \label{lemma:completion}
   Any underivable sequent $\Gamma_0 \vdash \Delta_0$ may be extended to a full sequent
@@ -197,6 +341,11 @@ which remains underivable, but is full.  This is known as completion.
   Clearly, $\Gamma \vdash \Delta$ is full.  
 \end{proof}
 
+Our proof of the completion lemma is a bit different from Mints.  He defines $\Gamma = \cup \Gamma_i$ and
+$\Delta = \cup\Delta_i$.  However, each $\Gamma_i$ and $\Delta_i$ are finite sets of formulas, and 
+each $\Gamma_i \subseteq \Gamma_{i+1}$ and $\Delta_i \subseteq \Delta_{i+1}$.  Thus, $\Gamma_n$ and
+$\Delta_n$ will contain all of the previous elements.  Thus, the union is not needed. Now Mints' definition
+would be correct if we were using possibly infinite sets, but this is not the case.
 We now arrive at the definition of the canonical Kripke model. This
 will be the counter model we will use to show completeness.
 
@@ -213,7 +362,8 @@ will be the counter model we will use to show completeness.
   \end{center}
 \end{definition}
 
-We now show that the canonical model falsifies every underivable sequent. 
+Now that we defined the canonical model our goal is to show that every underivable sequent is falsified
+in the canonical model. We first define what we mean by falsified in a model.
 \begin{definition}
   \label{def:Falsification}
   A sequent $\Gamma \vdash \Delta$ is \textbf{falsified} in a world $w$ of a Kripke model if
@@ -240,7 +390,8 @@ saturated.
   and $M$ is saturated for non-invertible rules.
 \end{definition}
 
-The following result is important for completeness.
+\noindent
+It turns out that the canonical model is saturated.  
 
 \begin{lemma}[Canonical Model is Saturated]
   \label{lemma:canonical_model_is_saturated}
@@ -255,6 +406,8 @@ The following result is important for completeness.
   $\psi \in \Delta'$.
 \end{proof}
 
+\noindent
+Finally we show our main theorem.  
 \begin{thm}[Falsification in $K$]
   \label{thm:falsification_in_k}
   Let $K = \langle W, R_\subseteq, V_\in \rangle$ be the canonical model. Then for $w \equiv \Gamma \vdash \Delta \in W$:
@@ -317,7 +470,7 @@ This is all that is needed to prove completeness of LJ.  We prove this in the ne
 
 \section{Completeness}
 \label{sec:completeness}
-
+Completeness follows easily from our previous result.  
 \begin{thm}[Completeness]
   \label{thm:completeness}
   Each sequent underivable in LJ is falsified in the canonical model $K$.  Hence
@@ -328,10 +481,11 @@ This is all that is needed to prove completeness of LJ.  We prove this in the ne
   That is $W$ is the set of worlds of $K$. Then by completion (Lemma~\ref{lemma:completion}),
   there exists a $\Gamma'$ and $\Delta'$ such that $\Gamma' \vdash \Delta'$ is the completed version of $\Gamma \vdash \Delta$. 
   Sense $W$ is saturated we know $\Gamma' \vdash \Delta' \in W$, and we may apply Theorem~\ref{thm:falsification_in_k} to obtain
-  that $V_\in(\Gamma' \vdash \Delta', \Gamma' \vdash \Delta') = 0$.  Hence, by monotonicity 
-  $V_\in(\Gamma \vdash \Delta, \Gamma' \vdash \Delta') = 0$.
+  that $V_\in(\Gamma' \vdash \Delta', \Gamma' \vdash \Delta') = 0$.  Hence, 
+  $V_\in(\Gamma \vdash \Delta, \Gamma' \vdash \Delta') = 0$, by the definition of validity of sequents.
 \end{proof}
-
+Mints shows soundness of our logic in Section 8.1 on page 57.  We can use it along with completeness to show admissibility of
+cut.  
 \begin{corollary}[Admissibility of Cut]
   \label{corollary:admissibility_of_cut}
   If $\Gamma \vdash \Delta, \phi$ and $\phi, \Gamma \vdash \Delta$ are derivable, then $\Gamma \vdash \Delta$ is derivable.
@@ -342,5 +496,4 @@ This is all that is needed to prove completeness of LJ.  We prove this in the ne
   $\Gamma \vdash \phi$ is valid.  Now by completeness (without cut) $\Gamma \vdash \Delta$ is derivable. 
 \end{proof}
 % section completeness (end)
-
 \end{document}
