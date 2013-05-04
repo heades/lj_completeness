@@ -370,7 +370,7 @@ in the canonical model. We first define what we mean by falsified in a model.
 \begin{definition}
   \label{def:Falsification}
   A sequent $\Gamma \vdash \Delta$ is \textbf{falsified} in a world $w$ of a Kripke model if
-  $V(\land \Gamma,w) = 1$ and $V(\lor \Delta, w) = 1$.  This implies that $V(\Gamma \vdash \Delta, w) = 0$.
+  $V(\land \Gamma,w) = 1$ and $V(\lor \Delta, w) = 0$.  This implies that $V(\Gamma \vdash \Delta, w) = 0$.
 \end{definition}
 
 Above we saw when a sequent is saturated for invertible rules.  Next we define when a set of sequents 
@@ -383,7 +383,7 @@ saturated.
   in $M$:
   \begin{center}
     if $\phi \to \psi \in \Delta$, then there is a sequent $\Gamma' \vdash \Delta' \in M$ such that
-    $\phi,\Gamma \subseteq \Gamma'$ and $\psi \in \Delta$.
+    $\phi,\Gamma \subseteq \Gamma'$ and $\psi \in \Delta'$.
   \end{center}
 \end{definition}
 
